@@ -66,7 +66,7 @@ function TodoSpace() {
           width: "fit-content",
           margin: "auto",
           marginTop:'1em',
-          minWidth: "1100px",
+          minWidth: "min(1100px , 90%)",
           background: "rgba(12,23,23,.1)",
           padding: "1em",
           borderRadius: "10px",
