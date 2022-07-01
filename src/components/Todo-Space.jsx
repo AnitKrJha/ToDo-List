@@ -8,13 +8,18 @@ function TodoSpace() {
   const [pending, setPending] = useState(0);
 
   function addTodo(e) {
+
+    function tomodiUpperCase(s){
+      return s[0].toUpperCase()+s.slice(1);
+    }
     e.preventDefault();
 
     setTodo((oldTodo) => {
       setTask("");
       setTotal((oldTotal) => oldTotal + 1);
       setPending((oldPending) => oldPending + 1);
-      return [...oldTodo, { task: task, id: id++, pending: true }];
+      
+      return [...oldTodo, { task: tomodiUpperCase(task), id: id++, pending: true }];
     });
   }
   function deleteTodo(z) {
@@ -30,10 +35,12 @@ function TodoSpace() {
   function ToggleStatus(item, e) {
     if (item.pending) {
       e.target.innerText = "Complete";
+      e.target.classList.toggle("btn-danger");
       item.pending = !item.pending;
       console.log(todos);
       setPending((oldPending) => oldPending - 1);
     } else {
+      e.target.classList.toggle("btn-danger");
       e.target.innerText = "Pending";
       item.pending = !item.pending;
       console.log(todos);
@@ -43,27 +50,57 @@ function TodoSpace() {
   return (
     <>
       <Header total={total} pending={pending} />
-      <form>
+      <form className="container d-flex align-items-center justify-content-center mt-4">
         <input
           type="text"
           value={task}
           onChange={(e) => setTask((oldTask) => e.target.value)}
+          className="form-control flex-grow-0 w-75 mx-5"
         />
-        <button type="submit" onClick={addTodo}>
+        <button type="submit" onClick={addTodo} className="btn btn-primary">
           Add Task
         </button>
       </form>
-      <ol>
-        {todos.map((todoItem) => {
+      <ol
+        style={{
+          width: "fit-content",
+          margin: "auto",
+          marginTop:'1em',
+          minWidth: "1100px",
+          background: "rgba(12,23,23,.1)",
+          padding: "1em",
+          borderRadius: "10px",
+        }}
+      >
+        {todos.map((todoItem, index) => {
           return (
-            <div key={todoItem.id}>
-              <li>
-                {todoItem.task} ,{todoItem.id}
+            <div
+              key={todoItem.id}
+              className="container d-flex align-items-center justify-content-between bg-dark text-light mt-3 rounded-2 py"
+            >
+              <li className="d-flex align-items-center">
+                <span className="mx-2 bg-light text-dark rounded-3 p-1 text-weight-bold lead">
+                  <strong>{index + 1}</strong>
+                </span>
+                <span className="bg-light text-dark rounded-1 p-1 mx-3 font-italic">
+                  {todoItem.task}
+                </span>
               </li>
-              <button onClick={() => deleteTodo(todoItem)}>Delete</button>
-              <button onClick={(e) => ToggleStatus(todoItem, e)}>
-                Pending
-              </button>
+              <div className="d-flex align-items-center">
+                <button
+                  className="btn btn-primary  mx-2"
+                  onClick={() => deleteTodo(todoItem)}
+                >
+                  Delete
+                </button>
+                <button
+                  className="btn btn-danger btn-success align-text-middle my-2 mx-2 "
+                  onClick={(e) => ToggleStatus(todoItem, e)}
+                >
+                  Pending
+                </button>
+              </div>
+
             </div>
           );
         })}
